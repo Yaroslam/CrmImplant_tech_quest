@@ -3,7 +3,7 @@ from email.mime.text import MIMEText
 from CONST import MAIL_PASS
 
 
-def send_email(message, getter):
+def send_email(message, getter, sender):
     sender = sender
     password = MAIL_PASS
 
