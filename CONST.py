@@ -8,6 +8,9 @@ Initial_contact_ID = 45076807
 Discussions_ID = 45076810
 Decision_making_ID = 45076813
 Contract_discussion_ID = 45076816
+RESPONSIBLE_USER = 7774696
+COMPANY_ID = 1115317
+MAIL_SENDER = "sender_here"
 MAIL_PASS = "password_here"
 
 HELLO_PART = 'Здравствуйте, '

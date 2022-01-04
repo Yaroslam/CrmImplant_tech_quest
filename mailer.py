@@ -4,7 +4,7 @@ from CONST import MAIL_PASS
 
 
 def send_email(message, getter):
-    sender = "vestnik700@gmail.com"
+    sender = sender
     password = MAIL_PASS
 
     server = smtplib.SMTP("smtp.gmail.com", 587)

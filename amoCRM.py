@@ -2,6 +2,7 @@ import requests
 from CONST import *
 from mailer import send_email
 from twillio_phone import *
+import datetime
 
 
 def create_contacts():
@@ -9,11 +10,12 @@ def create_contacts():
         data = {"add": [
             {
                 "name": f"Jason Nash{i}",
-                "responsible_user_id": 7774696,
-                "created_by": 7774696,
-                "created_at": 1509051600,
+                "responsible_user_id": RESPONSIBLE_USER,
+                "created_by": RESPONSIBLE_USER,
+                "created_at": datetime.datetime.now(),
                 "tags": "important, delivery",
-                "company_id": 1115317}
+                "company_id": COMPANY_ID
+            }
         ]
         }
 
@@ -24,7 +26,7 @@ def create_contacts():
 
 
 def get_contacts_id():
-    params = {"responsible_user_id": "7774696"}
+    params = {"responsible_user_id": f"{RESPONSIBLE_USER}"}
     id_arr = []
     response = requests.get(
         'https://vestnik700.amocrm.com/api/v2/contacts',
@@ -35,21 +37,21 @@ def get_contacts_id():
     return id_arr
 
 
-def create_leds():
+def create_leds(status_id):
     contacts_id_arr = get_contacts_id()
 
     for i in contacts_id_arr:
         data = {"add": [
             {
                 "name": f"clean house {i}",
-                "status_id": "13670637",
-                "responsible_user_id": 7774696,
+                "status_id": status_id,
+                "responsible_user_id": RESPONSIBLE_USER,
                 "sale": "5000",
                 "tags": "clean, house",
                 "contacts_id": [
                     i
                 ],
-                "company_id": 1115317,
+                "company_id": COMPANY_ID,
             }
         ]
         }
@@ -75,7 +77,7 @@ def get_leads_id():
 
 def update_leads(stage_id, lead):
     data = {"update": [{"id": lead,
-                        "updated_at": 1640980165,
+                        "updated_at": datetime.datetime.now(),
                         "status_id": stage_id
                         }
                        ]
@@ -123,18 +125,18 @@ def get_users_info(contact_id):
 
 
 
-def create_task(lead_id, user_info):
+def create_task(elem_id, user_info, elem_type, task_type, complete_till):
     data = {
         'add' : [
             {
-                "element_id": lead_id,
-                "element_type": "2",
-                "complete_till_at": "1650897355",
-                "task_type": "3",
+                "element_id": elem_id,
+                "element_type": elem_type,
+                "complete_till_at": complete_till,
+                "task_type": task_type,
                 "text": f"{user_info[0]}, {user_info[1]}",
-                "created_at": "1640897355",
-                "responsible_user_id": "7774696",
-                "created_by": "7774696"
+                "created_at": datetime.datetime.now(),
+                "responsible_user_id": RESPONSIBLE_USER,
+                "created_by": RESPONSIBLE_USER
             }
         ]
     }
@@ -145,17 +147,17 @@ def create_task(lead_id, user_info):
         json=data)
 
 
-def create_notes(user_id, note_text):
+def create_notes(user_id, note_text, note_type, elem_type):
     data = {
    "add": [
       {
          "element_id": user_id,
-         "element_type": "1",
+         "element_type": elem_type,
          "text": note_text,
-         "note_type": 4,
-         "created_at": "1650897355",
-         "responsible_user_id": "7774696",
-         "created_by": "7774696"
+         "note_type": note_type,
+         "created_at": datetime.datetime.now(),
+         "responsible_user_id": RESPONSIBLE_USER,
+         "created_by": RESPONSIBLE_USER
       }
    ],
     }
@@ -169,27 +171,25 @@ def create_notes(user_id, note_text):
 def letter_text(hello_part, main_text, note, user_name):
     return f'{hello_part} {user_name} {main_text} {note}'
 
-def leads_update_with_mail():
-    leads_id = get_leads_id()
-    for lds_id in leads_id:
-        update_leads(Contract_discussion_ID, lds_id)
-        lds_users = get_users_id_by_lead(lds_id)
-        for users in lds_users:
-            users_info = get_users_info(users)
-            create_task(lds_id, users_info)
-            letter = letter_text(HELLO_PART, MAIN_MESSAGE, NOTE, users_info[0])
-            send_email(letter,users_info[1])
-            create_notes(users, NOTE)
-
-def leads_with_phone():
-    leads_id = get_leads_id()
-    for lds_id in leads_id:
-        lds_users = get_users_id_by_lead(lds_id)
-        for users in lds_users:
-            users_info = get_users_info(users)
-            make_outbound_call(users_info[2])
-            print('call ok')
-            create_notes(users, NOTE_CALL_OUT)
-            print('note ok')
-
-leads_with_phone()
+# def leads_update_with_mail():
+#     leads_id = get_leads_id()
+#     for lds_id in leads_id:
+#         update_leads(Contract_discussion_ID, lds_id)
+#         lds_users = get_users_id_by_lead(lds_id)
+#         for users in lds_users:
+#             users_info = get_users_info(users)
+#             create_task(lds_id, users_info)
+#             letter = letter_text(HELLO_PART, MAIN_MESSAGE, NOTE, users_info[0])
+#             send_email(letter,users_info[1])
+#             create_notes(users, NOTE)
+#
+# def leads_with_phone():
+#     leads_id = get_leads_id()
+#     for lds_id in leads_id:
+#         lds_users = get_users_id_by_lead(lds_id)
+#         for users in lds_users:
+#             users_info = get_users_info(users)
+#             make_outbound_call(users_info[2])
+#             print('call ok')
+#             create_notes(users, NOTE_CALL_OUT)
+#             print('note ok')
