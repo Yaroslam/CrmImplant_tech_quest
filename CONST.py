@@ -10,8 +10,6 @@ Decision_making_ID = 45076813
 Contract_discussion_ID = 45076816
 RESPONSIBLE_USER = 7774696
 COMPANY_ID = 1115317
-MAIL_SENDER = "sender_here"
-MAIL_PASS = "password_here"
 
 HELLO_PART = 'Здравствуйте, '
 MAIN_MESSAGE = 'Состоиться встреча 21.12.22 в 11:00 длительностью 4 часа по адресу улица Первая дом 2, приходите'
@@ -26,3 +24,6 @@ DOMAIN_NAME = "vestnik701"
 IP_CONTROLLER_SID = "ALe7303a2b2314b08c7b01d98db3eb4b0a"
 IP_MAPPING_SID = "ALe7303a2b2314b08c7b01d98db3eb4b0a"
 CREDENTIAL_LIS_SID = "CL3c7b9a094af560196ac2b7913dcc6925"
+
+MAIL_SENDER = "sender_here"
+MAIL_PASS = "password_here"
